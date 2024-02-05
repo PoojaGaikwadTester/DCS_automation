@@ -1,21 +1,17 @@
 package tests;
 
 import generic.BaseTest;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
-import pageFactory.CartPage;
-import pageFactory.LoginPage;
-import pageFactory.ProductsPage;
-
-import java.util.Random;
-import java.util.random.RandomGenerator;
+import pageFactory.*;
+import pageFactory.CheckoutPage;
 
 
 public class CheckoutTest extends BaseTest {
    private LoginPage objLoginPage;
   private  ProductsPage objProductsPage;
-  private  CartPage objCartPage;
-
+  private CheckoutPage objCheckoutPage;
+private  CheckoutCompletePage objCheckoutCompletePage;
+private CheckoutOverviewPage objCheckoutOverviewPage;
 
     @BeforeClass
     public void startBrowser(){
@@ -23,17 +19,23 @@ public class CheckoutTest extends BaseTest {
         initializeBroswer("chrome");
         objLoginPage=new LoginPage(this.getDriver());
         objProductsPage=new ProductsPage(this.getDriver());
-        objCartPage=new CartPage(this.getDriver());
+        objCheckoutPage=new CheckoutPage(this.getDriver());
+        objCheckoutCompletePage=new CheckoutCompletePage(getDriver());
+        objCheckoutOverviewPage=new CheckoutOverviewPage(getDriver());
         objLoginPage.login();
+
     }
    @Test()
     public void checkoutFlow() throws InterruptedException {
        objProductsPage.addProductstoCart();
        objProductsPage.removingProduct();
        objProductsPage.clickCartAfterRemovingProduct();
-       objCartPage.verifyDetailsOfProductAdded(objProductsPage);//step 6 completed
-
+       objCheckoutPage.verifyDetailsOfProductAdded(objProductsPage);//step 6
+       objCheckoutPage.checkout(objProductsPage);
+       objCheckoutOverviewPage.verifyItem(objProductsPage);
+       objCheckoutCompletePage.verifyConfirmationmsg();//step 8
     }
+
 
 
 //    @AfterClass
