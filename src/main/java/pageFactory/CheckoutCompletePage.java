@@ -3,20 +3,22 @@ package pageFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import java.util.Properties;
 
 public class CheckoutCompletePage {
     private WebDriver driver;
-    By loc_header=By.xpath("//h2");//.gettext
-    By loc_desc=By.xpath("//h2/following::div[1]");//gettext
-String headermsg="Thank you for your order!",descmsg="Your order has been dispatched, and will arrive just as fast as the pony can get there!";
+    private Properties properties;
+    By loc_header=By.xpath("//h2");
+    By loc_desc=By.xpath("//h2/following::div[@class='complete-text']");
 
-    public CheckoutCompletePage(WebDriver driver) {
+    public CheckoutCompletePage(WebDriver driver,Properties properties) {
         this.driver = driver;
+        this.properties = properties;
     }
 
     public void verifyConfirmationmsg(){
-        Assert.assertEquals(driver.findElement(loc_header).getText(),headermsg);
-        Assert.assertEquals(driver.findElement(loc_desc).getText(),descmsg);
+        Assert.assertEquals(driver.findElement(loc_header).getText(),properties.getProperty("headermsg"));
+        Assert.assertEquals(driver.findElement(loc_desc).getText(),properties.getProperty("descmsg"));
         System.out.println("Verified Confirmation message");
 
     }

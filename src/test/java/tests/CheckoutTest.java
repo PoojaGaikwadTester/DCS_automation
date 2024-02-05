@@ -4,24 +4,27 @@ import generic.BaseTest;
 import org.testng.annotations.*;
 import pageFactory.*;
 import pageFactory.CheckoutPage;
+import java.util.Properties;
 
 
 public class CheckoutTest extends BaseTest {
-   private LoginPage objLoginPage;
-  private  ProductsPage objProductsPage;
-  private CheckoutPage objCheckoutPage;
+private LoginPage objLoginPage;
+private  ProductsPage objProductsPage;
+private CheckoutPage objCheckoutPage;
 private  CheckoutCompletePage objCheckoutCompletePage;
 private CheckoutOverviewPage objCheckoutOverviewPage;
+private Properties properties;
+
 
     @BeforeClass
     public void startBrowser(){
-      //  WebDriver driver = this.getDriver();
-        initializeBroswer("chrome");
-        objLoginPage=new LoginPage(this.getDriver());
-        objProductsPage=new ProductsPage(this.getDriver());
-        objCheckoutPage=new CheckoutPage(this.getDriver());
-        objCheckoutCompletePage=new CheckoutCompletePage(getDriver());
-        objCheckoutOverviewPage=new CheckoutOverviewPage(getDriver());
+        properties=loadproperties("property.properties");
+        initializeBroswer(properties.getProperty("browsertoopen"));
+        objLoginPage=new LoginPage(this.getDriver(),properties);
+        objProductsPage=new ProductsPage(this.getDriver(),properties);
+        objCheckoutPage=new CheckoutPage(this.getDriver(),properties);
+        objCheckoutCompletePage=new CheckoutCompletePage(getDriver(),properties);
+        objCheckoutOverviewPage=new CheckoutOverviewPage(getDriver(),properties);
         objLoginPage.login();
 
     }
@@ -36,10 +39,8 @@ private CheckoutOverviewPage objCheckoutOverviewPage;
        objCheckoutCompletePage.verifyConfirmationmsg();//step 8
     }
 
-
-
-//    @AfterClass
-//    public void terminate(){
-//
-//    }
+    @AfterClass
+    public void terminate(){
+        terminatebrowser();
+    }
 }
